@@ -1,56 +1,97 @@
+```js
+// =====================================================
+// SAFE SITE SCRIPT
+// =====================================================
+
+const site = typeof SITE !== "undefined" ? SITE : {};
+
+function setText(id, value = "") {
+  const el = document.getElementById(id);
+  if (el) el.textContent = value ?? "";
+}
+
+function setHTML(id, value = "") {
+  const el = document.getElementById(id);
+  if (el) el.innerHTML = value ?? "";
+}
+
+function setHref(id, value) {
+  const el = document.getElementById(id);
+  if (el && value) el.href = value;
+}
+
+
+// =====================================================
+// SITE CONTENT
+// =====================================================
+
 function setSiteContent() {
-  document.getElementById("brand").textContent = SITE.brand;
-  document.getElementById("heroEyebrow").textContent = SITE.heroEyebrow;
-  document.getElementById("heroHeadline").innerHTML = SITE.heroHeadline;
-  document.getElementById("heroIntro").textContent = SITE.heroIntro;
-  document.getElementById("availabilityText").textContent = SITE.availability;
+  setText("brand", site.brand);
+  setText("heroEyebrow", site.heroEyebrow);
+  setHTML("heroHeadline", site.heroHeadline);
+  setText("heroIntro", site.heroIntro);
+  setText("availabilityText", site.availability);
 
-  document.getElementById("heroCv").href = SITE.cv;
-  document.getElementById("footerCv").href = SITE.cv;
+  setHref("heroCv", site.cv);
+  setHref("footerCv", site.cv);
 
-  document.getElementById("aboutTitle").textContent = SITE.aboutTitle;
+  setText("aboutTitle", site.aboutTitle);
 
-  document.getElementById("contactHeading").innerHTML =
-    "Got a story?<br><em>Let's cut to it.</em>";
+  // Keep the contact heading exactly as intended.
+  setHTML(
+    "contactHeading",
+    "Got a story?<br><em>Let's cut to it.</em>"
+  );
 
   document.querySelectorAll("[data-email]").forEach(el => {
-    el.textContent = SITE.email;
+    if (site.email) el.textContent = site.email;
   });
 
   document.querySelectorAll("[data-linkedin]").forEach(el => {
-    el.href = SITE.linkedin;
+    if (site.linkedin) el.href = site.linkedin;
   });
 
   document.querySelectorAll("[data-instagram]").forEach(el => {
-    el.href = SITE.instagram;
+    if (site.instagram) el.href = site.instagram;
   });
 
   document.querySelectorAll("[data-youtube]").forEach(el => {
-    el.href = SITE.youtube;
+    if (site.youtube) el.href = site.youtube;
   });
 
-  const aboutParagraphs = document.querySelectorAll("#aboutParagraphs p");
-  if (SITE.aboutParagraphs && aboutParagraphs.length) {
+  // About paragraphs
+  const aboutParagraphs =
+    document.querySelectorAll("#aboutParagraphs p");
+
+  if (site.aboutParagraphs && aboutParagraphs.length) {
     aboutParagraphs.forEach((p, i) => {
-      if (SITE.aboutParagraphs[i]) {
-        p.textContent = SITE.aboutParagraphs[i];
+      if (site.aboutParagraphs[i]) {
+        p.textContent = site.aboutParagraphs[i];
       }
     });
   }
 
+  // Tools
   const toolList = document.getElementById("toolList");
-  if (toolList && SITE.tools) {
-    toolList.innerHTML = SITE.tools
+
+  if (toolList && Array.isArray(site.tools)) {
+    toolList.innerHTML = site.tools
       .map(tool => `<span>${tool}</span>`)
       .join("");
   }
 
-  const educationList = document.getElementById("educationList");
-  if (educationList && SITE.education) {
-    educationList.innerHTML = SITE.education
+  // Education
+  const educationList =
+    document.getElementById("educationList");
+
+  if (educationList && Array.isArray(site.education)) {
+    educationList.innerHTML = site.education
       .map(item => `
         <div class="timeline-item reveal">
-          <div class="timeline-year">${item.year || ""}</div>
+          <div class="timeline-year">
+            ${item.year || ""}
+          </div>
+
           <div class="timeline-content">
             <h3>${item.title || ""}</h3>
             <p>${item.description || ""}</p>
@@ -60,12 +101,18 @@ function setSiteContent() {
       .join("");
   }
 
-  const experienceList = document.getElementById("experienceList");
-  if (experienceList && SITE.experience) {
-    experienceList.innerHTML = SITE.experience
+  // Experience
+  const experienceList =
+    document.getElementById("experienceList");
+
+  if (experienceList && Array.isArray(site.experience)) {
+    experienceList.innerHTML = site.experience
       .map(item => `
         <div class="timeline-item reveal">
-          <div class="timeline-year">${item.year || ""}</div>
+          <div class="timeline-year">
+            ${item.year || ""}
+          </div>
+
           <div class="timeline-content">
             <h3>${item.title || ""}</h3>
             <p>${item.description || ""}</p>
@@ -75,13 +122,20 @@ function setSiteContent() {
       .join("");
   }
 
-  const serviceGrid = document.getElementById("serviceGrid");
-  if (serviceGrid && SITE.services) {
-    serviceGrid.innerHTML = SITE.services
+  // Services
+  const serviceGrid =
+    document.getElementById("serviceGrid");
+
+  if (serviceGrid && Array.isArray(site.services)) {
+    serviceGrid.innerHTML = site.services
       .map((service, i) => `
         <article class="service-card reveal">
-          <span class="service-number">0${i + 1}</span>
+          <span class="service-number">
+            ${String(i + 1).padStart(2, "0")}
+          </span>
+
           <h3>${service.title || ""}</h3>
+
           <p>${service.description || ""}</p>
         </article>
       `)
@@ -90,83 +144,105 @@ function setSiteContent() {
 }
 
 
-function render() {
-  const projectGrid = document.getElementById("projectGrid");
+// =====================================================
+// PROJECTS
+// =====================================================
 
-  if (projectGrid && SITE.projects) {
-    projectGrid.innerHTML = SITE.projects
-      .map(project => `
-        <article class="project-card reveal visible">
-          <a href="${project.url || "#"}"
-             target="_blank"
-             rel="noopener noreferrer">
+function renderProjects() {
+  const projectGrid =
+    document.getElementById("projectGrid");
 
-            <div class="project-image">
-              <img
-                src="${project.image || ""}"
-                alt="${project.title || ""}"
-                loading="lazy"
-              />
-            </div>
-
-            <div class="project-meta">
-              <div>
-                <span class="project-client">
-                  ${project.client || ""}
-                </span>
-                <h3>${project.title || ""}</h3>
-              </div>
-
-              <span class="project-arrow">↗</span>
-            </div>
-
-            <p>${project.description || ""}</p>
-          </a>
-        </article>
-      `)
-      .join("");
+  if (!projectGrid || !Array.isArray(site.projects)) {
+    return;
   }
+
+  projectGrid.innerHTML = site.projects
+    .map(project => `
+      <article class="project-card reveal visible">
+        <a
+          href="${project.url || "#"}"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+
+          <div class="project-image">
+            <img
+              src="${project.image || ""}"
+              alt="${project.title || ""}"
+              loading="lazy"
+            />
+          </div>
+
+          <div class="project-meta">
+            <div>
+              <span class="project-client">
+                ${project.client || ""}
+              </span>
+
+              <h3>${project.title || ""}</h3>
+            </div>
+
+            <span class="project-arrow">↗</span>
+          </div>
+
+          <p>${project.description || ""}</p>
+
+        </a>
+      </article>
+    `)
+    .join("");
 }
 
 
-/* --------------------------------
-   INITIALIZE SITE
--------------------------------- */
+// =====================================================
+// REVEAL ANIMATIONS
+// =====================================================
 
-setSiteContent();
-render();
+function setupRevealAnimations() {
+  const elements =
+    document.querySelectorAll(".reveal");
 
-
-/* --------------------------------
-   REVEAL ANIMATIONS
--------------------------------- */
-
-const observer = new IntersectionObserver(
-  entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("visible");
-      }
+  // If IntersectionObserver isn't available,
+  // simply show everything.
+  if (!("IntersectionObserver" in window)) {
+    elements.forEach(el => {
+      el.classList.add("visible");
     });
-  },
-  {
-    threshold: 0.12
+
+    return;
   }
-);
 
-document.querySelectorAll(".reveal").forEach(el => {
-  observer.observe(el);
-});
+  const observer = new IntersectionObserver(
+    entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    {
+      threshold: 0.08
+    }
+  );
+
+  elements.forEach(el => observer.observe(el));
+}
 
 
-/* --------------------------------
-   NAVIGATION
--------------------------------- */
+// =====================================================
+// MOBILE NAV
+// =====================================================
 
-const navToggle = document.querySelector(".nav-toggle");
-const navMenu = document.querySelector(".nav-links");
+function setupNavigation() {
+  const navToggle =
+    document.querySelector(".nav-toggle");
 
-if (navToggle && navMenu) {
+  const navMenu =
+    document.querySelector(".nav-links");
+
+  if (!navToggle || !navMenu) return;
+
   navToggle.addEventListener("click", () => {
     navMenu.classList.toggle("open");
     navToggle.classList.toggle("open");
@@ -181,24 +257,61 @@ if (navToggle && navMenu) {
 }
 
 
-/* --------------------------------
-   CONTACT EMAIL
--------------------------------- */
+// =====================================================
+// CONTACT
+// =====================================================
 
-const contactEmail = document.getElementById("contactEmail");
+function setupContact() {
+  const contactEmail =
+    document.getElementById("contactEmail");
 
-if (contactEmail && SITE.email) {
-  contactEmail.href =
-    `mailto:${SITE.email}?subject=Video%20Editing%20Project`;
+  if (contactEmail && site.email) {
+    contactEmail.href =
+      `mailto:${site.email}?subject=Video%20Editing%20Project`;
+  }
 }
 
 
-/* --------------------------------
-   CURRENT YEAR
--------------------------------- */
+// =====================================================
+// FOOTER YEAR
+// =====================================================
 
-const currentYear = document.getElementById("currentYear");
+function setupYear() {
+  const currentYear =
+    document.getElementById("currentYear");
 
-if (currentYear) {
-  currentYear.textContent = new Date().getFullYear();
+  if (currentYear) {
+    currentYear.textContent =
+      new Date().getFullYear();
+  }
 }
+
+
+// =====================================================
+// START
+// =====================================================
+
+function init() {
+  setSiteContent();
+  renderProjects();
+  setupRevealAnimations();
+  setupNavigation();
+  setupContact();
+  setupYear();
+
+  // Make sure the contact heading is never hidden.
+  const contactHeading =
+    document.getElementById("contactHeading");
+
+  if (contactHeading) {
+    contactHeading.style.opacity = "1";
+    contactHeading.style.visibility = "visible";
+  }
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", init);
+} else {
+  init();
+}
+```
