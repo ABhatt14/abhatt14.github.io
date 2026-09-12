@@ -820,3 +820,25 @@ body,.nav a,.brand,.hero h1,.section-head h2,.about h2,.project h3,.service-card
   .section-head h2{font-size:calc(var(--ui-section-head-size) * .68)}
   .footer-actions{flex-wrap:wrap}
 }
+/* FORCE CTA HEADING TO SHOW */
+.cta-inner {
+  opacity: 1 !important;
+  transform: none !important;
+  visibility: visible !important;
+}
+
+#contactHeading {
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  color: #f5f3ee !important;
+  position: relative !important;
+  z-index: 10 !important;
+}
+
+#contactHeading em {
+  display: inline !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  color: #b8ff3d !important;
+}
