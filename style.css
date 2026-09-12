@@ -842,3 +842,13 @@ body,.nav a,.brand,.hero h1,.section-head h2,.about h2,.project h3,.service-card
   visibility: visible !important;
   color: #b8ff3d !important;
 }
+/* Keep page content visible */
+.reveal {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+.reveal.visible {
+  opacity: 1 !important;
+  transform: none !important;
+}
