@@ -842,31 +842,3 @@ body,.nav a,.brand,.hero h1,.section-head h2,.about h2,.project h3,.service-card
   visibility: visible !important;
   color: #b8ff3d !important;
 }
-/* FINAL VISIBILITY FIX */
-
-.reveal,
-.reveal.visible {
-  opacity: 1 !important;
-  visibility: visible !important;
-  transform: none !important;
-}
-
-.cta-inner {
-  opacity: 1 !important;
-  visibility: visible !important;
-  transform: none !important;
-}
-
-#contactHeading {
-  display: block !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-  color: #f5f3ee !important;
-}
-
-#contactHeading em {
-  display: inline !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-  color: #b8ff3d !important;
-}
