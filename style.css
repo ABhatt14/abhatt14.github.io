@@ -852,3 +852,35 @@ body,.nav a,.brand,.hero h1,.section-head h2,.about h2,.project h3,.service-card
   opacity: 1 !important;
   transform: none !important;
 }
+/* TEMPORARY VISIBILITY FIX */
+html,
+body,
+main,
+header,
+footer,
+section,
+.hero,
+.hero-copy,
+.hero-visual,
+.section-head,
+.cta,
+.cta-inner {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.reveal {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+}
+
+.hero-copy h1,
+.hero-copy p,
+.hero-copy .eyebrow,
+.hero-visual,
+.cta-inner h2,
+.cta-inner p {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
