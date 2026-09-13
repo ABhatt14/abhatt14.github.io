@@ -74,10 +74,10 @@ function render(filter="all"){
     return `<article class="project reveal visible" tabindex="0" data-project-index="${projects.indexOf(p)}">
       <div class="project-media">
         ${cover ? `<img class="project-thumb" src="${cover}" alt="${p.title} cover" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove();this.parentElement.classList.add('image-missing')">` : `<div class="project-bg"></div>`}
-        ${p.preview ? `<video class="project-preview" playsinline preload="metadata" ${sound ? "" : "muted"} loop src="${p.preview}"></video>` : ""}
+        ${p.preview ? `<video class="project-preview" playsinline preload="metadata" ${sound ? "" : "muted"} loop src="${p.preview}"></video>` : p.youtubePreview ? `<iframe class="project-preview youtube-preview" title="${p.title} preview" data-src="${p.youtubePreview}" allow="autoplay; encrypted-media" tabindex="-1"></iframe>` : ""}
         <div class="project-shade"></div>
         <div class="project-play">▶</div>
-        <div class="project-watch">${p.preview ? (sound ? "SOUND ON" : "MUTED") + " · PREVIEW ↗" : (getVideoInfo(p.link)?.kind === "instagram" ? "INSTAGRAM ↗" : "WATCH ↗")}</div>
+        <div class="project-watch">${(p.preview || p.youtubePreview) ? (sound ? "SOUND ON" : "MUTED") + " · PREVIEW ↗" : (getVideoInfo(p.link)?.kind === "instagram" ? "INSTAGRAM ↗" : "WATCH ↗")}</div>
       </div>
       <span class="project-no">${String(projects.indexOf(p)+1).padStart(2,"0")}</span>
       <div class="project-content"><span class="project-type">${p.type}</span><h3>${p.title}</h3><p>${p.desc}</p><div class="project-tags">${(p.tags||[]).map(t=>`<span>${t}</span>`).join("")}</div></div>
@@ -126,21 +126,29 @@ function render(filter="all"){
 
   grid.querySelectorAll(".project").forEach(card=>{
     const p=projects[Number(card.dataset.projectIndex)];
-    const video=card.querySelector(".project-preview");
+    const video=card.querySelector("video.project-preview");
+    const youtubeFrame=card.querySelector(".youtube-preview");
     const isInstagram = getVideoInfo(p.link)?.kind === 'instagram';
     let hoverTimer;
     const stop=()=>{
       clearTimeout(hoverTimer);
       if(video){ video.pause(); video.currentTime=0; card.classList.remove("previewing"); }
+      if(youtubeFrame){ youtubeFrame.removeAttribute("src"); card.classList.remove("previewing"); }
     };
     const start=()=>{
       // Instagram only supplies a page URL here, not a direct video file.
       // Hover previews therefore stay as thumbnails; clicking opens the real Reel.
-      if(isInstagram || !video) return;
-      document.querySelectorAll(".project-preview").forEach(v=>{ if(v!==video){v.pause();v.currentTime=0;v.closest(".project")?.classList.remove("previewing");} });
+      if(isInstagram || (!video && !youtubeFrame)) return;
+      document.querySelectorAll("video.project-preview").forEach(v=>{ if(v!==video){v.pause();v.currentTime=0;v.closest(".project")?.classList.remove("previewing");} });
+      document.querySelectorAll("iframe.youtube-preview").forEach(frame=>{ if(frame!==youtubeFrame){frame.removeAttribute("src");frame.closest(".project")?.classList.remove("previewing");} });
       hoverTimer=setTimeout(()=>{
-        video.muted = p.sound !== true;
-        video.play().then(()=>card.classList.add("previewing")).catch(()=>{});
+        if(video){
+          video.muted = p.sound !== true;
+          video.play().then(()=>card.classList.add("previewing")).catch(()=>{});
+        } else if(youtubeFrame) {
+          youtubeFrame.src=youtubeFrame.dataset.src;
+          card.classList.add("previewing");
+        }
       },120);
     };
     card.addEventListener("mouseenter",start);
@@ -173,6 +181,7 @@ function getVideoInfo(link){
 
 function stopAllProjectPreviews(){
   document.querySelectorAll('.project-preview').forEach(v=>{try{v.pause();v.currentTime=0;}catch(e){}});
+  document.querySelectorAll('iframe.youtube-preview').forEach(frame=>frame.removeAttribute('src'));
 }
 function resetModalPlayer(){
   const wrap=document.getElementById('modalPlayerWrap');
