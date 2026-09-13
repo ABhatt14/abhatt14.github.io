@@ -145,3 +145,16 @@ body,.nav a,.brand,.hero h1,.section-head h2,.about h2,.project h3,.service-card
 .footer-cv{display:inline-flex;align-items:center;gap:8px;text-decoration:none}
 @media(max-width:850px){.nav{min-height:auto}.section-head h2{font-size:calc(var(--ui-section-head-size) * .82)}}
 @media(max-width:520px){.section-head h2{font-size:calc(var(--ui-section-head-size) * .68)}.footer-actions{flex-wrap:wrap}}
+/* Keep the complete desktop grid and layout on tablets and phones. */
+@media (max-width:850px){
+  .nav nav{display:flex!important}
+  .hero{grid-template-columns:var(--d-hero-left) var(--d-hero-right)!important}
+  .project-grid{grid-template-columns:repeat(var(--d-project-cols),minmax(0,1fr))!important}
+  .service-grid{grid-template-columns:repeat(var(--d-service-cols),minmax(0,1fr))!important}
+  .about{grid-template-columns:.7fr 1.3fr!important}
+  .timeline-item{grid-template-columns:var(--d-timeline-label) 1fr!important}
+  .section-head{display:flex!important}
+}
+@media (max-width:520px){
+  .service-grid{grid-template-columns:repeat(var(--d-service-cols),minmax(0,1fr))!important}
+}
