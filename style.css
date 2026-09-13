@@ -161,3 +161,255 @@ body,.nav a,.brand,.hero h1,.section-head h2,.about h2,.project h3,.service-card
 @media(max-width:400px){
   .nav-actions .social-icon{display:none}
 }
+/* =========================================================
+   MOBILE FIX — paste this at the very BOTTOM of style.css
+   (after everything else, including any old mobile media
+   queries you already have — delete those old ones first
+   if you can find them, otherwise this will still win
+   because it comes last and uses !important on layout
+   properties).
+   ========================================================= */
+
+/* ---------- Global safety net ---------- */
+html, body {
+  overflow-x: hidden !important;
+  width: 100% !important;
+  max-width: 100vw !important;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+img, svg, iframe {
+  max-width: 100% !important;
+  height: auto !important;
+}
+
+@media (max-width: 960px) {
+
+  /* ---------- Fluid type & spacing everywhere ---------- */
+  h1 { font-size: clamp(2rem, 8vw, 3rem) !important; line-height: 1.15 !important; }
+  h2 { font-size: clamp(1.5rem, 6vw, 2.2rem) !important; line-height: 1.2 !important; }
+  p, .lede { font-size: clamp(0.95rem, 3.2vw, 1.05rem) !important; }
+
+  .section {
+    padding: clamp(2.5rem, 8vw, 4rem) clamp(1.25rem, 5vw, 1.5rem) !important;
+  }
+
+  /* ---------- Nav ---------- */
+  .nav {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 0.75rem !important;
+    padding: 1rem clamp(1rem, 5vw, 1.5rem) !important;
+  }
+
+  #siteNav {
+    flex-basis: 100% !important;
+    order: 3 !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 0.75rem 1.25rem !important;
+    font-size: 0.85rem !important;
+  }
+
+  .nav-actions {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.75rem !important;
+  }
+
+  .nav-actions .nav-cta {
+    font-size: 0.85rem !important;
+    padding: 0.5rem 0.9rem !important;
+  }
+
+  /* ---------- Hero ---------- */
+  .hero.section {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    gap: clamp(2rem, 6vw, 2.5rem) !important;
+    padding-top: clamp(3rem, 12vw, 5rem) !important;
+  }
+
+  .hero-copy {
+    width: 100% !important;
+    align-items: center !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .hero-actions {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 0.75rem !important;
+  }
+
+  .hero-actions .button {
+    width: 100% !important;
+    text-align: center !important;
+    justify-content: center !important;
+  }
+
+  .hero-visual {
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+
+  .portrait-flip {
+    width: min(78vw, 320px) !important;
+    height: min(78vw, 320px) !important;
+    max-width: 100% !important;
+  }
+
+  .orbit-a, .orbit-b { display: none !important; }
+
+  /* ---------- Marquee (skills strip) ---------- */
+  .marquee {
+    padding: 0.75rem 0 !important;
+  }
+
+  .marquee-track span,
+  .marquee-track i {
+    font-size: clamp(0.85rem, 4vw, 1.1rem) !important;
+  }
+
+  /* ---------- Section headers ---------- */
+  .section-head {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.75rem !important;
+    text-align: left !important;
+  }
+
+  /* ---------- Filters row (project category tabs) ---------- */
+  .filters {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    gap: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+    scrollbar-width: none !important;
+  }
+  .filters::-webkit-scrollbar { display: none !important; }
+
+  /* ---------- Project grid ---------- */
+  .project-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 1.25rem !important;
+  }
+
+  /* ---------- Services grid ---------- */
+  .service-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 1.25rem !important;
+  }
+
+  /* ---------- About ---------- */
+  .about {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    gap: clamp(1.5rem, 6vw, 2rem) !important;
+  }
+
+  .about-photo {
+    width: min(70vw, 280px) !important;
+  }
+
+  .about-copy {
+    width: 100% !important;
+  }
+
+  .tool-list {
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+  }
+
+  .education {
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  /* ---------- Experience timeline ---------- */
+  .timeline {
+    width: 100% !important;
+    padding-left: 1rem !important;
+  }
+
+  /* ---------- CTA / contact ---------- */
+  .cta-inner {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    gap: 1rem !important;
+  }
+
+  .cta-inner .button {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  .contact-links {
+    justify-content: center !important;
+  }
+
+  /* ---------- Footer ---------- */
+  .footer {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    gap: 0.75rem !important;
+    padding: 2rem clamp(1rem, 5vw, 1.5rem) !important;
+  }
+
+  .footer-actions {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    gap: 0.75rem 1.25rem !important;
+  }
+
+  /* ---------- Modal ---------- */
+  .modal-card {
+    width: min(94vw, 480px) !important;
+    max-height: 88vh !important;
+    overflow-y: auto !important;
+    padding: clamp(1rem, 5vw, 1.5rem) !important;
+  }
+
+  .modal-player,
+  .modal-player-placeholder {
+    aspect-ratio: 16 / 9 !important;
+    width: 100% !important;
+    height: auto !important;
+  }
+}
+
+/* ---------- Extra-small phones ---------- */
+@media (max-width: 400px) {
+  .portrait-flip {
+    width: 85vw !important;
+    height: 85vw !important;
+  }
+
+  .section {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+}
