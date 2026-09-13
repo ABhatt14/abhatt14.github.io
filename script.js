@@ -300,7 +300,10 @@ document.querySelectorAll(".reveal").forEach(el=>observer.observe(el));
   if(SITE.portrait) { const hero=document.getElementById('heroPortrait'); if(hero) hero.src=SITE.portrait; }
   const r=d.responsive||{};
   const responsiveStyle=document.createElement('style');responsiveStyle.id='responsiveDesignCSS';
-  responsiveStyle.textContent=`@media(max-width:${r.mobileBreakpoint||850}px){.nav nav{display:none}.hero{grid-template-columns:1fr}.project-grid{grid-template-columns:1fr}.service-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.about{grid-template-columns:1fr}.timeline-item{grid-template-columns:1fr}}@media(max-width:${r.phoneBreakpoint||520}px){.service-grid{grid-template-columns:1fr}.section{width:min(100% - 28px,var(--d-container))}.hero h1{font-size:50px}.portrait-flip{width:min(var(--portrait-width,300px),78vw)}}`;
+  // Note: mobile nav visibility/menu behavior lives in style.css (hamburger toggle),
+  // so it is intentionally NOT duplicated here anymore — that duplicate used to
+  // fight with the toggle and re-hide the mobile menu after it was opened.
+  responsiveStyle.textContent=`@media(max-width:${r.mobileBreakpoint||850}px){.hero{grid-template-columns:1fr}.project-grid{grid-template-columns:1fr}.service-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.about{grid-template-columns:1fr}.timeline-item{grid-template-columns:1fr}}@media(max-width:${r.phoneBreakpoint||520}px){.service-grid{grid-template-columns:1fr}.section{width:min(100% - 28px,var(--d-container))}.hero h1{font-size:50px}.portrait-flip{width:min(var(--portrait-width,300px),78vw)}}`;
   document.head.appendChild(responsiveStyle);
   const custom=document.createElement('style');custom.id='customDesignCSS';custom.textContent=d.customCSS||'';document.head.appendChild(custom);
 })();
@@ -318,3 +321,22 @@ window.addEventListener("resize",()=>{
 
 // Click-to-flip profile card
 (function(){const card=document.getElementById('portraitFlip');if(!card)return;card.addEventListener('click',()=>card.classList.toggle('is-flipped'));})();
+
+// Mobile hamburger menu: toggles the slide-down nav defined in style.css
+(function(){
+  const header=document.getElementById('siteHeader');
+  const toggle=document.getElementById('navToggle');
+  const nav=document.getElementById('siteNav');
+  if(!header || !toggle || !nav) return;
+  const closeMenu=()=>{
+    header.classList.remove('menu-open');
+    toggle.setAttribute('aria-expanded','false');
+  };
+  toggle.addEventListener('click',()=>{
+    const isOpen = header.classList.toggle('menu-open');
+    toggle.setAttribute('aria-expanded', String(isOpen));
+  });
+  // Close the menu once a section link is tapped, and on resize back to desktop.
+  nav.addEventListener('click', e=>{ if(e.target.tagName==='A') closeMenu(); });
+  window.addEventListener('resize', ()=>{ if(window.innerWidth>850) closeMenu(); });
+})();
